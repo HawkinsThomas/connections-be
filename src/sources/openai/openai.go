@@ -24,7 +24,7 @@ type OpenAIResponse struct {
 func FetchAnswers(clue string) ([]string, error) {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		log.Printf("Error loading .env file")
 	}
 	apiKey := os.Getenv("OPENAI_API_KEY")
 	projectId := os.Getenv("OPENAI_PROJECT_ID")

@@ -1,0 +1,3 @@
+config:
+  gcp:project: connections-436317
+  gcp:region: us-central1

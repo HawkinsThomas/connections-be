@@ -1,7 +1,7 @@
 package router
 
 import (
-	"connections/handlers"
+	"github.com/HawkinsThomas/connections-be/src/handlers"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
