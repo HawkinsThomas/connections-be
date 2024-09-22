@@ -11,11 +11,9 @@ config:
     default: dist.zip
 
 variables:
+  appPath: dist.zip
   appArchive:
     fn::fileArchive: ${appPath}
-  configJSON:
-    fn::toJSON:
-      api: ${go-function.httpsTriggerUrl}
 
 resources:
   app-bucket:
@@ -35,6 +33,12 @@ resources:
       runtime: go122
       entryPoint: CloudFunctionEntry
       triggerHttp: True
+      environmentVariables:
+        OPENAI_PROJECT_ID: proj_QLDGIF8kBlcaBYMIVd28uWJL
+      secretEnvironmentVariables:
+        - key: OPENAI_API_KEY
+          secret: openai-api-key
+          version: 1
 
   invoker:
     type: gcp:cloudfunctions:FunctionIamMember
