@@ -1,0 +1,49 @@
+name: connections-be
+runtime: yaml
+description: A Pulumi YAML program to manage a golang GCP cloud function
+
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: gcp-yaml
+  appPath:
+    type: string
+    default: dist.zip
+
+variables:
+  appArchive:
+    fn::fileArchive: ${appPath}
+  configJSON:
+    fn::toJSON:
+      api: ${go-function.httpsTriggerUrl}
+
+resources:
+  app-bucket:
+    type: gcp:storage:Bucket
+    properties:
+      location: US
+  app-archive:
+    type: gcp:storage:BucketObject
+    properties:
+      bucket: ${app-bucket.name}
+      source: ${appArchive}
+  go-function:
+    type: gcp:cloudfunctions:Function
+    properties:
+      sourceArchiveBucket: ${app-bucket.name}
+      sourceArchiveObject: ${app-archive.name}
+      runtime: go122
+      entryPoint: CloudFunctionEntry
+      triggerHttp: True
+
+  invoker:
+    type: gcp:cloudfunctions:FunctionIamMember
+    properties:
+      project: ${go-function.project}
+      region: ${go-function.region}
+      cloudFunction: ${go-function.name}
+      role: roles/cloudfunctions.invoker
+      member: allUsers
+
+outputs:
+  apiURL: ${go-function.httpsTriggerUrl}

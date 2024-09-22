@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"connections/sources/openai"
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/HawkinsThomas/connections-be/src/sources/openai"
 )
 
 type GenerateAnswersResponse struct {
